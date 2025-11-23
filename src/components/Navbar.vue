@@ -12,13 +12,7 @@
     </nav>
 
     <section class="flex-1">
-      <div class="form-control">
-        <input
-          type="text"
-          placeholder="Search"
-          class="input input-bordered w-48 ml-2 md:w-auto dark:bg-white/5 dark:backdrop-blur-md dark:[--webkit-backdrop-filter:blur(10px)] dark:border-white/10"
-        />
-      </div>
+
     </section>
 
     <section class="flex gap-6">

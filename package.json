@@ -1,8 +1,20 @@
 {
   "name": "my-vue-dashboard",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
+  "description": "This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.",
+  "homepage": "https://github.com/MagangSetjen/dashboard#readme",
+  "bugs": {
+    "url": "https://github.com/MagangSetjen/dashboard/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MagangSetjen/dashboard.git"
+  },
+  "license": "ISC",
+  "author": "",
   "type": "module",
+  "main": "vite.config.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -13,7 +25,8 @@
     "chart.js": "^4.4.9",
     "tailwindcss": "^4.1.4",
     "vue": "^3.5.13",
-    "vue-chartjs": "^5.3.2"
+    "vue-chartjs": "^5.3.2",
+    "vue-router": "^4.6.3"
   },
   "devDependencies": {
     "@iconify/vue": "^4.3.0",
