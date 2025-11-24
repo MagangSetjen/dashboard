@@ -357,15 +357,24 @@
             </span>
           </button>
 
-          <ul v-if="link.children && link.open" class="ml-4 pl-4 border-l border-gray-200 dark:border-white/10">
-            <li v-for="(child, childIndex) in link.children" :key="childIndex" class="my-2">
-              <router-link :to="child.to"
-                class="block py-2 hover:bg-gray-100 dark:hover:bg-white/10 text-black dark:text-white">
-                {{ child.name }}
-              </router-link>
-            </li>
-          </ul>
-
+<ul v-if="link.children && link.open" class="ml-4 pl-4 border-l border-gray-200 dark:border-white/10">
+  <li
+    v-for="(child, childIndex) in link.children"
+    :key="childIndex"
+    class="my-2"
+  >
+    <router-link
+      :to="child.to"
+      :class="[
+        'block py-2 px-3 rounded-md hover:bg-gray-100 dark:hover:bg-white/10 text-black dark:text-white',
+        { 'submenu-active': child.active }
+      ]"
+      @click.prevent="setActive(index, childIndex)"
+    >
+      {{ child.name }}
+    </router-link>
+  </li>
+</ul>
 
         </li>
       </ul>
@@ -402,31 +411,57 @@ const links = ref([
   },
   {
     name: "Laporan",
-    icon: "line-md:document-list",
+    icon: "mdi:folder-outline",
     active: false,
     open: true,
     children: [
-      { name: "Rangking Sekolah", to: "/dashboard/rangking" },
-      { name: "Menu Revitalisasi", to: "#" },
-      { name: "Verifikasi", to: "#" },
+      { name: "Rangking Sekolah", to: "/dashboard/rangking", active: false },
+      { name: "Menu Revitalisasi", to: "#", active: false },
+      { name: "Verifikasi", to: "#", active: false },
     ],
   },
 ]);
 
-const setActive = (index) => {
+const setActive = (index, childIndex = null) => {
   const link = links.value[index];
 
-  // menu punya child → cuma toggle open/close
-  if (link.children) {
-    link.open = !link.open;
-  } else if (link.to) {
-    router.push(link.to);
-  }
+  if (childIndex === null) {
+    // click parent
+    if (link.children) {
+      link.open = !link.open;
+    }
+    if (link.to && link.to !== "#") {
+      router.push(link.to);
+    }
 
-  // set active untuk top-level
-  links.value.forEach((l, i) => {
-    l.active = i === index;
-  });
+    // set active parent only, clear all children
+    links.value.forEach((l, i) => {
+      l.active = i === index;
+      if (l.children) {
+        l.children.forEach((c) => (c.active = false));
+      }
+    });
+  } else {
+    // click child
+    const child = link.children[childIndex];
+
+    if (child.to && child.to !== "#") {
+      router.push(child.to);
+    }
+
+    // make parent section active and highlight selected child
+    links.value.forEach((l, i) => {
+      l.active = i === index;
+      if (l.children) {
+        l.children.forEach((c, ci) => {
+          c.active = i === index && ci === childIndex;
+        });
+      }
+    });
+
+    // ensure folder stays open when a child is active
+    link.open = true;
+  }
 };
 </script>
 

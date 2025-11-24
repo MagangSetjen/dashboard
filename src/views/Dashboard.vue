@@ -1,24 +1,20 @@
 <template>
     <div class="drawer lg:drawer-open font-display">
         <input type="checkbox" id="my-drawer" class="drawer-toggle" />
+
         <!-- Page Content -->
         <div class="drawer-content flex flex-col">
-            <Navbar :isDark="isDark" @toggle-drawer="toggleDrawer" @toggle-theme="toggleTheme" />
-            <!-- Main conten -->
-            <main class="flex-1 p-6 bg-base-200 dark:bg-backgroundDark">
+            <Navbar
+                :isDark="isDark"
+                @toggle-drawer="toggleDrawer"
+                @toggle-theme="toggleTheme"
+            />
+
+            <!-- Main content -->
+            <!-- ❗️No bg-* class here, so gradient from App.vue is visible -->
+            <main class="flex-1 p-6">
                 <router-view />
-                <!-- <Jenjang /> -->
-                <!-- <StatsCards /> -->
-                <!-- <Statcard /> -->
-
-                <!-- <DataSekolah /> -->
-                <!-- <DataPekerjaan /> -->
-
-                <!-- <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <RecentOrders class="lg:col-span-2" />
-                    <RecentActivity />
-                </div> -->
-                <!-- <StackedBarChart class="mt-6" /> -->
+                <!-- or your content / cards here -->
             </main>
         </div>
 
@@ -39,23 +35,24 @@ import RecentActivity from "../components/RecentActivity.vue";
 import StackedBarChart from "../components/StackedBarChart.vue";
 import DataSekolah from "../components/DataSekolah.vue";
 import DataPekerjaan from "../components/DataPekerjaan.vue";
-const isDark = ref(true);
+
+// default LIGHT
+const isDark = ref(false);
 
 onMounted(() => {
     const savedTheme = localStorage.getItem("theme");
-    const systemPrefersDark = window.matchMedia(
-        "(prefers-color-scheme:dark)"
-    ).matches;
 
     if (savedTheme) {
         isDark.value = savedTheme === "dark";
-    } else if (systemPrefersDark) {
-        isDark.value = true;
+    } else {
+        isDark.value = false;
+        localStorage.setItem("theme", "light");
     }
 });
 
 watchEffect(() => {
     const html = document.documentElement;
+
     if (isDark.value) {
         html.setAttribute("data-theme", "dark");
         localStorage.setItem("theme", "dark");
